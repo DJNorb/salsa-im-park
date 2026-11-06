@@ -1,0 +1,39 @@
+# Baut die Website und lädt sie per FTP zu ALL-INKL hoch.
+name: Website veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Bilder importieren"]
+    types: [completed]
+
+concurrency:
+  group: veroeffentlichen
+  cancel-in-progress: false
+
+# Die Projektdateien liegen im Unterordner salsa-im-park/
+defaults:
+  run:
+    working-directory: salsa-im-park
+
+jobs:
+  veroeffentlichen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run build
+      - name: Per FTP zu ALL-INKL hochladen
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_BENUTZER }}
+          password: ${{ secrets.FTP_PASSWORT }}
+          server-dir: ${{ secrets.FTP_ORDNER }}
+          local-dir: ./salsa-im-park/dist/
+          protocol: ftps
