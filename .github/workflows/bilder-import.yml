@@ -7,6 +7,11 @@ on:
 permissions:
   contents: write
 
+# Die Projektdateien liegen im Unterordner salsa-im-park/
+defaults:
+  run:
+    working-directory: salsa-im-park
+
 jobs:
   import:
     runs-on: ubuntu-latest
