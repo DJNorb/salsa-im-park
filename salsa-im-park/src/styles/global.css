@@ -1,0 +1,59 @@
+@import '@fontsource-variable/bricolage-grotesque';
+
+:root {
+  --creme: #fbf6ee;
+  --papier: #ffffff;
+  --tinte: #2a1d16;
+  --grau: #6b5a4e;
+  --linie: #eadfce;
+  --rot: #c2361d;       /* Salsa-Rot */
+  --rot-dunkel: #8f2410;
+  --sonne: #f2a33a;     /* Sommer-Orange */
+  --gruen: #2f6b3a;     /* Stadtpark-Grün */
+  --schrift: 'Bricolage Grotesque Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --breite: 1120px;
+  --radius: 14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { margin: 0; background: var(--creme); color: var(--tinte); font-family: var(--schrift); font-size: 18px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--rot); text-underline-offset: 3px; }
+a:hover { color: var(--rot-dunkel); }
+:focus-visible { outline: 3px solid var(--sonne); outline-offset: 2px; }
+h1, h2, h3 { line-height: 1.1; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 750; }
+h3 { font-size: 1.25rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+
+.inhalt { width: min(100% - 40px, var(--breite)); margin-inline: auto; }
+.abschnitt { padding-block: clamp(56px, 9vw, 104px); display: flex; flex-direction: column; gap: 28px; }
+.abschnitt + .abschnitt { border-top: 1px solid var(--linie); }
+.vorspann { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rot); }
+.leise { color: var(--grau); }
+.ornament { width: min(320px, 70%); margin-inline: auto; opacity: .9; }
+
+.knopf { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; background: var(--rot); color: #fff; font-weight: 700; text-decoration: none; }
+.knopf:hover { background: var(--rot-dunkel); color: #fff; }
+.knopf.hell { background: transparent; color: var(--tinte); border: 2px solid var(--tinte); }
+.knopf.hell:hover { background: var(--tinte); color: var(--creme); }
+
+.status { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+.status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.status.geplant { background: #f3ebdf; color: var(--grau); }
+.status.ok { background: #e1efe3; color: var(--gruen); }
+.status.abgesagt { background: #f8e0db; color: var(--rot-dunkel); }
+.status.ausweich { background: #fdeccf; color: #8a5200; }
+
+.nur-vorleser { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sprung { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--tinte); color: #fff; padding: 10px 16px; border-radius: 8px; }
+.sprung:focus { top: 12px; }
+
+.rechtstext { max-width: 760px; display: flex; flex-direction: column; gap: 14px; }
+.rechtstext h2 { font-size: 1.6rem; margin-top: 28px; }
+.rechtstext h3 { margin-top: 12px; }
+.rechtstext ul { margin: 0; padding-left: 22px; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }

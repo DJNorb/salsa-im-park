@@ -1,0 +1,14 @@
+{
+  "_erklaerung": "Hauptmenü. Neue Unterseiten aus src/inhalte/seiten/ mit 'imMenue: true' werden automatisch angehängt.",
+  "menue": [
+    { "titel": "Start", "link": "/" },
+    { "titel": "Termine", "link": "/#termine" },
+    { "titel": "Bilder", "link": "/Pictures/" },
+    { "titel": "Location", "link": "/#location" },
+    { "titel": "Kontakt", "link": "/#kontakt" }
+  ],
+  "fusszeile": [
+    { "titel": "Impressum", "link": "/impressum--disclaimer.html" },
+    { "titel": "Datenschutz", "link": "/datenschutz.html" }
+  ]
+}

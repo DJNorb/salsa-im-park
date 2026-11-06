@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import Kopf from '../komponenten/Kopf.astro';
+import Fuss from '../komponenten/Fuss.astro';
+import website from '../inhalte/website.json';
+import location from '../inhalte/location.json';
+import { termine, jahr, beginn, ende, zeitzone } from '../lib/termine.js';
+
+const { titel, beschreibung = website.beschreibung, bild = website.teilenBild, strukturdaten = false, keinIndex = false } = Astro.props;
+const seitentitel = titel ? `${titel} | ${website.name}` : website.titel;
+const kanonisch = new URL(Astro.url.pathname, website.url).href;
+const bildUrl = new URL(bild, website.url).href;
+
+// Strukturierte Daten: jede Veranstaltung erscheint als Event in Suchmaschinen
+const ort = { '@type': 'Place', name: location.name, address: { '@type': 'PostalAddress', streetAddress: location.strasse, postalCode: location.plz, addressLocality: location.ort, addressCountry: 'DE' } };
+const events = termine.filter((t) => t.key !== 'fällt aus').map((t) => ({
+  '@context': 'https://schema.org', '@type': 'DanceEvent',
+  name: `${website.name} – ${t.effektiv}`,
+  startDate: `${t.effektiv}T${beginn}:00${zeitzone}`, endDate: `${t.effektiv}T${ende}:00${zeitzone}`,
+  eventStatus: t.key === 'abgesagt' ? 'https://schema.org/EventRescheduled' : 'https://schema.org/EventScheduled',
+  ...(t.key === 'abgesagt' ? { previousStartDate: `${t.datum}T${beginn}:00${zeitzone}` } : {}),
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: ort, image: [bildUrl], description: website.beschreibung,
+  organizer: { '@type': 'Person', name: website.betreiber, url: website.url },
+  performer: { '@type': 'Person', name: 'DJ Norb' },
+}));
+---
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{seitentitel}</title>
+  <meta name="description" content={beschreibung} />
+  <meta name="author" content={website.betreiber} />
+  {keinIndex && <meta name="robots" content="noindex" />}
+  <link rel="canonical" href={kanonisch} />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#c2361d" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:site_name" content={website.name} />
+  <meta property="og:title" content={seitentitel} />
+  <meta property="og:description" content={beschreibung} />
+  <meta property="og:url" content={kanonisch} />
+  <meta property="og:image" content={bildUrl} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  {strukturdaten && events.map((e) => <script type="application/ld+json" set:html={JSON.stringify(e)} />)}
+</head>
+<body>
+  <a class="sprung" href="#hauptinhalt">Zum Inhalt springen</a>
+  <Kopf />
+  <main id="hauptinhalt"><slot /></main>
+  <Fuss />
+</body>
+</html>

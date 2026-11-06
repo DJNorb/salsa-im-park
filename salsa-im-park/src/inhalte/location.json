@@ -1,0 +1,9 @@
+{
+  "_erklaerung": "Veranstaltungsort. 'routenplaner' ist ein einfacher Link (keine eingebettete Karte, daher datenschutzfreundlich).",
+  "ueberschrift": "Location",
+  "name": "Freilichtbühne des Stadtparkcafès",
+  "strasse": "Engelhardtstraße 20",
+  "plz": "90762",
+  "ort": "Fürth",
+  "routenplaner": "https://www.openstreetmap.org/search?query=Engelhardtstra%C3%9Fe%2020%2C%2090762%20F%C3%BCrth"
+}

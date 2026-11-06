@@ -1,0 +1,13 @@
+---
+// Erzeugt automatisch eine Seite für jede Datei in src/inhalte/seiten/*.md
+import Basis from '../layouts/Basis.astro';
+import { zusatzSeiten } from '../lib/seiten.js';
+export function getStaticPaths() {
+  return zusatzSeiten().map((s) => ({ params: { seite: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const { Inhalt } = s;
+---
+<Basis titel={s.titel} beschreibung={s.beschreibung}>
+  <article class="inhalt abschnitt rechtstext"><Inhalt /></article>
+</Basis>

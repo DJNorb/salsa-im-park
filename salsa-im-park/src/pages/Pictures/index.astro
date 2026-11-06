@@ -1,0 +1,37 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import { Image } from 'astro:assets';
+import { alleGalerien } from '../../lib/galerien.js';
+const serien = alleGalerien();
+const datum = (iso) => iso ? new Date(iso + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+---
+<Basis titel="Bilder" beschreibung="Salsa im Park Fürth: Fotos und Eindrücke von der Freilichtbühne des Stadtparkcafès – Salsatanzen, Bachata und Kizomba im Freien.">
+  <section class="inhalt abschnitt">
+    <span class="vorspann">Fotogalerie</span>
+    <h1>Salsa im Park Bilder</h1>
+    {serien.length === 0 && <p>Hier erscheinen bald die Fotos.</p>}
+    <ul class="serien">
+      {serien.map((s) => (
+        <li>
+          <a href={`/Pictures/${s.slug}/`}>
+            <Image src={s.fotos[0].bild} alt="" widths={[480, 720]} sizes="(max-width: 700px) 100vw, 360px" loading="lazy" />
+            <span class="info">
+              <strong>{s.titel}</strong>
+              <span class="leise">{datum(s.datum)} · {s.fotos.length} Fotos</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Basis>
+
+<style>
+  h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+  .serien { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 20px; }
+  .serien a { display: flex; flex-direction: column; background: var(--papier); border: 1px solid var(--linie); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--tinte); }
+  .serien img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .info { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px 20px; }
+  .info strong { font-size: 1.15rem; }
+  .serien a:hover strong { color: var(--rot); }
+</style>

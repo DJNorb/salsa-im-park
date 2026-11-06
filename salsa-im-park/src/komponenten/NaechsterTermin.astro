@@ -1,0 +1,53 @@
+---
+// Box "Nächster Termin". Wird beim Erstellen der Website vorbefüllt und im Browser
+// täglich neu berechnet – so stimmt die Anzeige auch ohne neues Hochladen.
+import { aktuelleLage, anzeige, beginn, ende } from '../lib/termine.js';
+import startseite from '../inhalte/startseite.json';
+const { variante = 'gross' } = Astro.props;
+const a = anzeige(aktuelleLage());
+---
+<div class={`naechster ${variante}`} data-naechster>
+  <p class="warnung" role="alert" data-feld="warnung" hidden={!a?.warnung}>{a?.warnung}</p>
+  <div class="box" data-feld="box" hidden={!a}>
+    {variante === 'gross' && <div class="kalender" aria-hidden="true"><span class="t" data-feld="tag">{a?.tag}</span><span class="m" data-feld="monat">{a?.monat}</span></div>}
+    <div class="text">
+      <span class="leise">Nächster Termin</span>
+      <strong class="datum" data-feld="lang">{a?.lang}</strong>
+      <span>von {beginn} – {ende} Uhr</span>
+      <span class={`status ${a?.klasse ?? ''}`} data-feld="status">{a?.text}</span>
+      <p class="hinweis" data-feld="hinweis" hidden={!a?.hinweis}>{a?.hinweis}</p>
+    </div>
+  </div>
+  <p data-feld="leer" hidden={!!a}>{startseite.keinTermin}</p>
+</div>
+
+<script>
+  import { aktuelleLage, anzeige } from '../lib/termine.js';
+  const a = anzeige(aktuelleLage());
+  document.querySelectorAll('[data-naechster]').forEach((el) => {
+    const f = (n) => el.querySelector(`[data-feld="${n}"]`);
+    f('box').hidden = !a; f('leer').hidden = !!a;
+    if (!a) { f('warnung').hidden = true; return; }
+    if (f('tag')) { f('tag').textContent = a.tag; f('monat').textContent = a.monat; }
+    f('lang').textContent = a.lang;
+    f('status').textContent = a.text; f('status').className = `status ${a.klasse}`;
+    f('warnung').textContent = a.warnung; f('warnung').hidden = !a.warnung;
+    f('hinweis').textContent = a.hinweis; f('hinweis').hidden = !a.hinweis;
+  });
+</script>
+
+<style>
+  .naechster { display: flex; flex-direction: column; gap: 14px; }
+  .warnung { background: #8f2410; color: #fff; font-weight: 700; font-size: 1.1rem; padding: 16px 20px; border-radius: var(--radius); max-width: 760px; }
+  .box { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: center; background: var(--papier); border-radius: var(--radius); padding: clamp(20px, 4vw, 36px); box-shadow: 0 1px 0 var(--linie), 0 20px 40px -28px rgba(80, 30, 10, .35); }
+  .kompakt .box { display: flex; padding: 18px 22px; border: 1px solid var(--linie); box-shadow: none; }
+  .kompakt .warnung { font-size: 1rem; }
+  .kalender { width: 120px; aspect-ratio: 1; border-radius: var(--radius); background: var(--rot); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .kalender .t { font-size: 3.4rem; font-weight: 800; line-height: 1; }
+  .kalender .m { font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .85rem; }
+  .text { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .datum { font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.15; }
+  .kompakt .datum { font-size: 1.35rem; }
+  [hidden] { display: none !important; }
+  @media (max-width: 520px) { .box { grid-template-columns: 1fr; } .kalender { width: 96px; } }
+</style>

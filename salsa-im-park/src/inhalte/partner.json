@@ -1,0 +1,12 @@
+{
+  "_erklaerung": "Liste der Partner. Logos liegen in public/_Media/. Neuer Partner = neuer Eintrag in der Liste.",
+  "ueberschrift": "Partner",
+  "partner": [
+    {
+      "name": "Stadtparkcafe Fürth",
+      "logo": "/_Media/stadtpark-logo4_med.png",
+      "link": "http://www.stadtparkcafe-fuerth.de/",
+      "text": "Stadtparkcafe Fürth Veranstaltungskalender"
+    }
+  ]
+}

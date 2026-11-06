@@ -1,0 +1,14 @@
+{
+  "_erklaerung": "Termine der Saison. 'datum' = eigentlicher Termin, 'ausweichtermin' = Termin bei schlechtem Wetter. Erlaubte Werte für 'status': geplant | findet statt | abgesagt (= Ausweichtermin gilt) | fällt aus (= Termin und Ausweichtermin fallen aus). 'hinweis' ist optionaler Zusatztext. Datumsformat: JJJJ-MM-TT.",
+  "jahr": 2027,
+  "beginn": "18:00",
+  "ende": "22:00",
+  "zeitzone": "+02:00",
+  "termine": [
+    { "datum": "2027-05-21", "ausweichtermin": "2027-05-28", "status": "geplant", "hinweis": "" },
+    { "datum": "2027-06-04", "ausweichtermin": "2027-06-18", "status": "geplant", "hinweis": "" },
+    { "datum": "2027-07-02", "ausweichtermin": "2027-07-09", "status": "geplant", "hinweis": "" },
+    { "datum": "2027-08-06", "ausweichtermin": "2027-08-13", "status": "geplant", "hinweis": "" },
+    { "datum": "2027-09-03", "ausweichtermin": "2027-09-24", "status": "geplant", "hinweis": "" }
+  ]
+}

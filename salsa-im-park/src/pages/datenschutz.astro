@@ -1,0 +1,7 @@
+---
+import Basis from '../layouts/Basis.astro';
+import { Content, frontmatter } from '../inhalte/recht/datenschutz.md';
+---
+<Basis titel={frontmatter.titel} beschreibung={frontmatter.beschreibung}>
+  <article class="inhalt abschnitt rechtstext"><Content /></article>
+</Basis>

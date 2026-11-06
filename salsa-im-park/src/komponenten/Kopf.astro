@@ -1,0 +1,57 @@
+---
+import navigation from '../inhalte/navigation.json';
+import website from '../inhalte/website.json';
+import { zusatzSeiten } from '../lib/seiten.js';
+
+const menue = [...navigation.menue, ...zusatzSeiten().filter((s) => s.imMenue).map((s) => ({ titel: s.titel, link: s.link }))];
+const pfad = Astro.url.pathname;
+---
+<header class="kopf">
+  <div class="inhalt kopf-reihe">
+    <a href="/" class="marke"><img src="/favicon.png" alt="" width="30" height="30" /><span>{website.name}</span></a>
+    <button class="menue-knopf" aria-expanded="false" aria-controls="hauptmenue">
+      <span class="striche" aria-hidden="true"></span>
+      <span>Menü</span>
+    </button>
+    <nav id="hauptmenue" aria-label="Hauptmenü">
+      <ul>
+        {menue.map((m) => <li><a href={m.link} aria-current={m.link === pfad ? 'page' : undefined}>{m.titel}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const knopf = document.querySelector('.menue-knopf');
+  const nav = document.getElementById('hauptmenue');
+  knopf?.addEventListener('click', () => {
+    const offen = knopf.getAttribute('aria-expanded') === 'true';
+    knopf.setAttribute('aria-expanded', String(!offen));
+    nav.classList.toggle('offen', !offen);
+  });
+  nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+    knopf.setAttribute('aria-expanded', 'false'); nav.classList.remove('offen');
+  }));
+</script>
+
+<style>
+  .kopf { position: sticky; top: 0; z-index: 50; background: color-mix(in oklab, var(--creme) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linie); }
+  .kopf-reihe { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 68px; }
+  .marke { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--tinte); text-decoration: none; }
+  .marke img { border-radius: 7px; }
+  .marke span::first-letter { color: var(--rot); }
+  nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
+  nav a { display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: var(--tinte); text-decoration: none; font-weight: 600; }
+  nav a:hover, nav a[aria-current='page'] { background: var(--papier); color: var(--rot); }
+  .menue-knopf { display: none; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border: 2px solid var(--tinte); border-radius: 999px; background: none; font: inherit; font-weight: 700; color: var(--tinte); cursor: pointer; }
+  .striche, .striche::before, .striche::after { display: block; width: 18px; height: 2px; background: currentColor; position: relative; }
+  .striche::before, .striche::after { content: ''; position: absolute; }
+  .striche::before { top: -6px; } .striche::after { top: 6px; }
+  @media (max-width: 760px) {
+    .menue-knopf { display: inline-flex; }
+    nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--creme); border-bottom: 1px solid var(--linie); padding: 12px 20px 20px; }
+    nav.offen { display: block; }
+    nav ul { flex-direction: column; }
+    nav a { min-height: 52px; font-size: 1.15rem; }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+// Alte Seite "Bilderübersicht" – Adresse bleibt erhalten.
+import Basis from '../layouts/Basis.astro';
+import dj from '../inhalte/dj.json';
+---
+<Basis titel="Bilderübersicht">
+  <section class="inhalt abschnitt">
+    <h1>Salsa im Park Bilder</h1>
+    <a href="/Pictures/" class="bild"><img src="/_Media/salsa_im_park_bachata_fuert_med.jpeg" alt="Salsa im Park Bachata Fuerth Nuernberg Germany Stadtpark" /></a>
+    <a class="knopf" href="/Pictures/">Zur Fotogalerie</a>
+    <img class="ornament" src={dj.ornament} alt="" aria-hidden="true" />
+  </section>
+</Basis>
+<style>
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+  .bild img { border-radius: var(--radius); max-width: 720px; width: 100%; }
+</style>

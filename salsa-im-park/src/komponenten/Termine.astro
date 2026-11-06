@@ -1,0 +1,55 @@
+---
+import NaechsterTermin from './NaechsterTermin.astro';
+import { termine, datumKurz, letzterTag, beginn, ende, jahr } from '../lib/termine.js';
+import startseite from '../inhalte/startseite.json';
+---
+<section class="inhalt abschnitt" id="termine" aria-labelledby="termine-titel">
+  <div class="kopfzeile">
+    <span class="vorspann">Saison {jahr}</span>
+    <h2 id="termine-titel">Termine {jahr}</h2>
+  </div>
+
+  <NaechsterTermin variante="gross" />
+
+  <p class="wetter">{startseite.wetterhinweis}</p>
+
+  <ol class="liste">
+    {termine.map((t) => (
+      <li data-bis={letzterTag(t)}>
+        <div class="haupt">
+          <strong class={t.key !== 'geplant' && t.key !== 'findet statt' ? 'durch' : ''}>{datumKurz(t.datum)}</strong>
+          <span class="leise">Ausweichtermin: {datumKurz(t.ausweichtermin)}</span>
+        </div>
+        <span class={`status ${t.status.klasse}`}>{t.key === 'abgesagt' ? `abgesagt → ${datumKurz(t.ausweichtermin)}` : t.status.text}</span>
+        {t.hinweis && <p class="hinweis">{t.hinweis}</p>}
+      </li>
+    ))}
+  </ol>
+  <p class="leise">Jeweils {beginn} – {ende} Uhr. Der erste Termin im Monat ist der eigentliche Termin, der zweite der Ausweichtermin bei schlechtem Wetter.</p>
+
+  {startseite.flyer.anzeigen && (
+    <a href={startseite.flyer.link} class="flyer"><img src={startseite.flyer.bild} alt={startseite.flyer.alt} loading="lazy" /></a>
+  )}
+</section>
+
+<script>
+  import { heuteISO } from '../lib/termine.js';
+  const h = heuteISO();
+  const items = [...document.querySelectorAll('.liste li[data-bis]')];
+  items.forEach((li) => li.classList.toggle('vorbei', li.dataset.bis < h));
+  items.find((li) => li.dataset.bis >= h)?.classList.add('aktiv');
+</script>
+
+<style>
+  .kopfzeile { display: flex; flex-direction: column; gap: 8px; }
+  .wetter { font-size: 1.15rem; font-weight: 600; max-width: 760px; padding-left: 18px; border-left: 4px solid var(--sonne); }
+  .liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .liste li { background: var(--papier); border: 1px solid var(--linie); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .liste li.aktiv { border-color: var(--rot); box-shadow: inset 0 0 0 1px var(--rot); }
+  .liste li.vorbei { opacity: .5; }
+  .haupt { display: flex; flex-direction: column; gap: 2px; }
+  .haupt strong { font-size: 1.3rem; }
+  .durch { text-decoration: line-through; text-decoration-thickness: 2px; }
+  .hinweis { font-size: .95rem; }
+  .flyer img { border-radius: var(--radius); max-width: 640px; width: 100%; }
+</style>

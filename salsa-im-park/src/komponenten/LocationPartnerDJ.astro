@@ -1,0 +1,46 @@
+---
+import location from '../inhalte/location.json';
+import partner from '../inhalte/partner.json';
+import dj from '../inhalte/dj.json';
+---
+<section class="inhalt abschnitt" id="location">
+  <div class="raster">
+    <div class="karte ort">
+      <span class="vorspann">{location.ueberschrift}</span>
+      <h2>{location.name}</h2>
+      <address>{location.strasse}<br />{location.plz} {location.ort}</address>
+      <a class="knopf hell" href={location.routenplaner} target="_blank" rel="noopener">Route planen ↗</a>
+    </div>
+
+    <div class="karte">
+      <span class="vorspann">{partner.ueberschrift}</span>
+      <ul class="partner">
+        {partner.partner.map((p) => (
+          <li>
+            <a href={p.link} target="_blank" rel="noopener"><img src={p.logo} alt={`Logo ${p.name}`} loading="lazy" /></a>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <a class="karte dj" href={dj.link} target="_blank" rel="noopener">
+      <img src={dj.bild} alt={dj.alt} loading="lazy" />
+      <span class="name">{dj.name} ↗</span>
+    </a>
+  </div>
+  <img class="ornament" src={dj.ornament} alt="" aria-hidden="true" loading="lazy" />
+</section>
+
+<style>
+  .raster { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+  .karte { background: var(--papier); border: 1px solid var(--linie); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .ort h2 { font-size: 1.7rem; }
+  address { font-style: normal; font-size: 1.15rem; }
+  .partner { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+  .partner img { max-height: 110px; width: auto; }
+  .dj { padding: 0; overflow: hidden; text-decoration: none; color: var(--tinte); gap: 0; }
+  .dj img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .dj .name { padding: 18px 24px; font-weight: 800; font-size: 1.3rem; }
+  .dj:hover .name { color: var(--rot); }
+</style>

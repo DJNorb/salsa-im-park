@@ -1,0 +1,57 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Termine from '../komponenten/Termine.astro';
+import NaechsterTermin from '../komponenten/NaechsterTermin.astro';
+import Fotoraster from '../komponenten/Fotoraster.astro';
+import LocationPartnerDJ from '../komponenten/LocationPartnerDJ.astro';
+import startseite from '../inhalte/startseite.json';
+import location from '../inhalte/location.json';
+import { alleGalerien } from '../lib/galerien.js';
+
+const neueste = alleGalerien()[0];
+const vorschau = neueste ? neueste.fotos.slice(0, startseite.bilder.anzahlVorschau) : [];
+---
+<Basis strukturdaten>
+  <section class="held">
+    <div class="inhalt held-raster">
+      <div class="held-text">
+        <h1>{startseite.ueberschrift}</h1>
+        <p class="unterzeile">Salsa, Bachata &amp; Kizomba unter freiem Himmel – {location.name}, {location.ort}</p>
+        <NaechsterTermin variante="kompakt" />
+        <div class="knoepfe">
+          <a class="knopf" href="#termine">Alle Termine</a>
+          <a class="knopf hell" href="/Pictures/">Bilder ansehen</a>
+        </div>
+      </div>
+      <img class="banner" src={startseite.banner.bild} alt={startseite.banner.alt} fetchpriority="high" />
+    </div>
+  </section>
+
+  <Termine />
+
+  <section class="inhalt abschnitt" aria-labelledby="bilder-titel">
+    <div class="zeile">
+      <h2 id="bilder-titel">{startseite.bilder.ueberschrift}</h2>
+      <a class="knopf hell" href="/Pictures/">Alle Bilder</a>
+    </div>
+    {vorschau.length > 0
+      ? <Fotoraster fotos={vorschau} galerieId="start" />
+      : <a href="/Pictures/"><img class="collage" src={startseite.bilder.collage.bild} alt={startseite.bilder.collage.alt} loading="lazy" /></a>}
+  </section>
+
+  <LocationPartnerDJ />
+</Basis>
+
+<style>
+  .held { background: radial-gradient(120% 90% at 85% 10%, #fde3b8 0%, transparent 60%), var(--creme); padding-block: clamp(40px, 7vw, 88px); }
+  .held-raster { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .held-text { display: flex; flex-direction: column; gap: 22px; align-items: stretch; }
+  .held-text > * { align-self: flex-start; }
+  h1 { color: var(--rot); }
+  .unterzeile { font-size: clamp(1.1rem, 2vw, 1.35rem); max-width: 30ch; }
+  .knoepfe { display: flex; flex-wrap: wrap; gap: 12px; }
+  .banner { width: 100%; border-radius: var(--radius); box-shadow: 0 30px 60px -30px rgba(80, 30, 10, .45); }
+  .zeile { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; }
+  .collage { border-radius: var(--radius); max-width: 640px; }
+  @media (max-width: 820px) { .held-raster { grid-template-columns: 1fr; } .banner { order: -1; } }
+</style>

@@ -1,0 +1,24 @@
+{
+  "_erklaerung": "Texte und Bilder der Startseite. Flyer: neues Bild nach public/_Media/ legen und bei flyer.bild eintragen. Ausblenden mit anzeigen: false.",
+  "ueberschrift": "Salsa im Park",
+  "banner": {
+    "bild": "/_Media/salsa_im_park_fuerth_backgr_med-2_2026.png",
+    "alt": "Salsa im Park Fuerth 2019 Bachata Kizomba unter freiem Himmel"
+  },
+  "wetterhinweis": "Salsa im Park findet einmal monatlich statt. Bei schlechtem Wetter gibt es jeweils einen Ausweichtermin. Ob ein Event stattfindet, wird spätestens am Veranstaltungstag um 12:00 Uhr hier bekannt gegeben.",
+  "keinTermin": "Die nächsten Termine werden hier bekannt gegeben.",
+  "flyer": {
+    "anzeigen": true,
+    "bild": "/_Media/flyer-2027-platzhalter.svg",
+    "alt": "Salsa im Park Flyer 2027 – Terminübersicht",
+    "link": "/Pictures/"
+  },
+  "bilder": {
+    "ueberschrift": "Salsa im Park Bilder",
+    "collage": {
+      "bild": "/_Media/sip_fuerth_salsa_collage2.gif",
+      "alt": "Salsa im Park Fürth – Collage"
+    },
+    "anzahlVorschau": 6
+  }
+}

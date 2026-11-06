@@ -1,0 +1,33 @@
+---
+import kontakt from '../inhalte/kontakt.json';
+import navigation from '../inhalte/navigation.json';
+import website from '../inhalte/website.json';
+const mail = `mailto:${kontakt.email}?subject=${encodeURIComponent(kontakt.betreff)}`;
+---
+<footer class="fuss" id="kontakt">
+  <div class="inhalt fuss-raster">
+    <div class="spalte">
+      <span class="marke">{website.name}</span>
+      <p>Kontakt &amp; Anfragen</p>
+      <a class="mail" href={mail}>{kontakt.email}</a>
+    </div>
+    <nav aria-label="Rechtliches" class="spalte">
+      {navigation.fusszeile.map((l) => <a href={l.link}>{l.titel}</a>)}
+    </nav>
+    <div class="spalte unten">
+      <span>{kontakt.copyright} {new Date().getFullYear()}</span>
+      <a href="#">Nach oben ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .fuss { background: var(--tinte); color: #f3e9dc; padding-block: 56px; }
+  .fuss a { color: #fff; }
+  .fuss a:hover { color: var(--sonne); }
+  .fuss-raster { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; align-items: start; }
+  .spalte { display: flex; flex-direction: column; gap: 8px; }
+  .marke { font-weight: 800; font-size: 1.4rem; color: #fff; }
+  .mail { font-size: 1.2rem; font-weight: 700; }
+  .unten { color: #cbbcaa; }
+</style>

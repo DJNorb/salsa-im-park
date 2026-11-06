@@ -1,0 +1,19 @@
+{
+  "name": "salsa-im-park",
+  "type": "module",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/nach-build.mjs dist",
+    "preview": "astro preview",
+    "bilder-import": "node scripts/bilder-import.mjs",
+    "ftp": "astro build --outDir ./FTP-Upload && node scripts/nach-build.mjs FTP-Upload"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "@fontsource-variable/bricolage-grotesque": "^5.1.0",
+    "astro": "^5.1.0",
+    "sharp": "^0.33.5"
+  }
+}
