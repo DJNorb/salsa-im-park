@@ -1,0 +1,25 @@
+# Einmalig von Hand starten: holt alle Fotos von der alten Website.
+name: Bilder importieren
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run bilder-import
+      - run: |
+          git config user.name "Bilder-Import"
+          git config user.email "actions@github.com"
+          git add -A src/inhalte public server
+          git commit -m "Bilder importiert" || echo "Keine neuen Bilder"
+          git push
