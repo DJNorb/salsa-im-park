@@ -1,0 +1,208 @@
+# Bearbeitungsoberfläche (Sveltia CMS) – erreichbar unter /admin/
+# Anmeldung: "Mit Token anmelden" + GitHub-Zugangsschlüssel (siehe Anleitung).
+backend:
+  name: github
+  repo: DJNorb/salsa-im-park
+  branch: main
+  commit_messages:
+    create: 'Neu: {{collection}} „{{slug}}“'
+    update: 'Geändert: {{collection}} „{{slug}}“'
+    delete: 'Gelöscht: {{collection}} „{{slug}}“'
+    uploadMedia: 'Bild hochgeladen: {{path}}'
+    deleteMedia: 'Bild gelöscht: {{path}}'
+
+locale: de
+site_url: https://www.salsa-im-park.de
+logo_url: /favicon.png
+media_folder: salsa-im-park/public/_Media
+public_folder: /_Media
+
+collections:
+  - name: termine
+    label: Termine & Status
+    files:
+      - name: termine
+        label: Termine
+        file: salsa-im-park/src/inhalte/termine.json
+        format: json
+        fields:
+          - { name: _erklaerung, widget: hidden, required: false }
+          - { name: jahr, label: Saison (Jahr), widget: number, value_type: int }
+          - { name: beginn, label: Beginn (z. B. 18:00), widget: string }
+          - { name: ende, label: Ende (z. B. 22:00), widget: string }
+          - { name: zeitzone, widget: hidden, default: '+02:00' }
+          - name: termine
+            label: Termine
+            label_singular: Termin
+            widget: list
+            summary: '{{datum}} – {{status}}'
+            fields:
+              - { name: datum, label: Termin, widget: datetime, time_format: false, format: YYYY-MM-DD }
+              - { name: ausweichtermin, label: Ausweichtermin (schlechtes Wetter), widget: datetime, time_format: false, format: YYYY-MM-DD }
+              - name: status
+                label: Status
+                widget: select
+                default: geplant
+                options:
+                  - { label: 'geplant', value: 'geplant' }
+                  - { label: 'findet statt', value: 'findet statt' }
+                  - { label: 'abgesagt → Ausweichtermin gilt', value: 'abgesagt' }
+                  - { label: 'fällt aus (auch Ausweichtermin)', value: 'fällt aus' }
+              - { name: hinweis, label: Hinweis (optional), widget: string, required: false }
+
+  - name: startseite
+    label: Startseite
+    files:
+      - name: startseite
+        label: Texte, Banner & Flyer
+        file: salsa-im-park/src/inhalte/startseite.json
+        format: json
+        fields:
+          - { name: _erklaerung, widget: hidden, required: false }
+          - { name: ueberschrift, label: Überschrift, widget: string }
+          - name: banner
+            label: Bild rechts oben (Banner)
+            widget: object
+            fields:
+              - { name: bild, label: Bild, widget: image }
+              - { name: alt, label: Bildbeschreibung (für Blinde & Google), widget: string }
+          - { name: wetterhinweis, label: Wetterhinweis, widget: text }
+          - { name: keinTermin, label: Text wenn kein Termin ansteht, widget: string }
+          - name: flyer
+            label: Flyer
+            widget: object
+            fields:
+              - { name: anzeigen, label: Flyer anzeigen, widget: boolean }
+              - { name: bild, label: Bild, widget: image }
+              - { name: alt, label: Bildbeschreibung, widget: string }
+              - { name: link, label: Link beim Anklicken, widget: string }
+          - name: bilder
+            label: Bereich „Bilder“
+            widget: object
+            fields:
+              - { name: ueberschrift, label: Überschrift, widget: string }
+              - name: collage
+                label: Ersatzbild (wenn keine Galerie vorhanden)
+                widget: object
+                fields:
+                  - { name: bild, label: Bild, widget: image }
+                  - { name: alt, label: Bildbeschreibung, widget: string }
+              - { name: anzahlVorschau, label: Anzahl Vorschaufotos, widget: number, value_type: int }
+
+  - name: galerien
+    label: Fotogalerien
+    label_singular: Fotogalerie
+    folder: salsa-im-park/src/inhalte/galerien
+    path: '{{slug}}/galerie'
+    format: json
+    extension: json
+    create: true
+    delete: true
+    identifier_field: titel
+    slug: '{{titel}}'
+    summary: '{{titel}}'
+    sortable_fields: [datum, titel]
+    media_folder: ''
+    public_folder: ''
+    fields:
+      - { name: titel, label: Name der Galerie, widget: string }
+      - { name: datum, label: Sortierdatum (wird nicht angezeigt – neueste Galerie steht oben), widget: datetime, time_format: false, format: YYYY-MM-DD, required: false }
+      - { name: beschreibung, label: Beschreibung (optional), widget: text, required: false }
+      - { name: sichtbar, label: Auf der Website anzeigen, widget: boolean, default: true }
+      - { name: quelle, widget: hidden, required: false }
+      - name: fotos
+        label: Fotos (Reihenfolge per Ziehen ändern)
+        label_singular: Foto
+        widget: list
+        field: { name: bild, label: Foto, widget: image }
+
+  - name: infos
+    label: Location, Partner, DJ & Kontakt
+    files:
+      - name: location
+        label: Location
+        file: salsa-im-park/src/inhalte/location.json
+        format: json
+        fields:
+          - { name: _erklaerung, widget: hidden, required: false }
+          - { name: ueberschrift, label: Überschrift, widget: string }
+          - { name: name, label: Name des Ortes, widget: string }
+          - { name: strasse, label: Straße, widget: string }
+          - { name: plz, label: PLZ, widget: string }
+          - { name: ort, label: Ort, widget: string }
+          - { name: routenplaner, label: Link Routenplaner, widget: string }
+      - name: partner
+        label: Partner
+        file: salsa-im-park/src/inhalte/partner.json
+        format: json
+        fields:
+          - { name: _erklaerung, widget: hidden, required: false }
+          - { name: ueberschrift, label: Überschrift, widget: string }
+          - name: partner
+            label: Partner
+            label_singular: Partner
+            widget: list
+            summary: '{{name}}'
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: logo, label: Logo, widget: image }
+              - { name: link, label: Website, widget: string }
+              - { name: text, label: Text, widget: string, required: false }
+      - name: dj
+        label: DJ Norb
+        file: salsa-im-park/src/inhalte/dj.json
+        format: json
+        fields:
+          - { name: _erklaerung, widget: hidden, required: false }
+          - { name: name, label: Name, widget: string }
+          - { name: bild, label: Foto, widget: image }
+          - { name: alt, label: Bildbeschreibung, widget: string }
+          - { name: link, label: Website, widget: string }
+          - { name: ornament, label: Ornament-Linie, widget: image }
+      - name: kontakt
+        label: Kontakt
+        file: salsa-im-park/src/inhalte/kontakt.json
+        format: json
+        fields:
+          - { name: _erklaerung, widget: hidden, required: false }
+          - { name: email, label: E-Mail, widget: string }
+          - { name: betreff, label: Betreff der E-Mail, widget: string }
+          - { name: copyright, label: Copyright (Jahr kommt automatisch), widget: string }
+
+  - name: recht
+    label: Impressum & Datenschutz
+    files:
+      - name: impressum
+        label: Impressum
+        file: salsa-im-park/src/inhalte/recht/impressum.md
+        format: frontmatter
+        fields:
+          - { name: titel, label: Seitentitel, widget: string }
+          - { name: beschreibung, label: Beschreibung für Google, widget: string }
+          - { name: body, label: Text, widget: markdown }
+      - name: datenschutz
+        label: Datenschutz
+        file: salsa-im-park/src/inhalte/recht/datenschutz.md
+        format: frontmatter
+        fields:
+          - { name: titel, label: Seitentitel, widget: string }
+          - { name: beschreibung, label: Beschreibung für Google, widget: string }
+          - { name: stand, label: Stand, widget: string, required: false }
+          - { name: body, label: Text, widget: markdown }
+
+  - name: seiten
+    label: Unterseiten
+    label_singular: Unterseite
+    folder: salsa-im-park/src/inhalte/seiten
+    extension: md
+    format: frontmatter
+    create: true
+    delete: true
+    identifier_field: titel
+    slug: '{{titel}}'
+    filter: { field: imMenue, pattern: '.*' }
+    fields:
+      - { name: titel, label: Titel, widget: string }
+      - { name: beschreibung, label: Beschreibung für Google, widget: string }
+      - { name: imMenue, label: Im Menü anzeigen, widget: boolean, default: false }
+      - { name: body, label: Text, widget: markdown }

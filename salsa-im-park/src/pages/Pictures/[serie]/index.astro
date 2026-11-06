@@ -7,13 +7,12 @@ export function getStaticPaths() {
   return alleGalerien().map((serie) => ({ params: { serie: serie.slug }, props: { serie } }));
 }
 const { serie } = Astro.props;
-const datum = serie.datum ? new Date(serie.datum + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 ---
-<Basis titel={`${serie.titel} – Bilder`} beschreibung={serie.beschreibung || `Fotos von Salsa im Park Fürth am ${datum}: Salsatanzen auf der Freilichtbühne des Stadtparkcafès.`}>
+<Basis titel={`${serie.titel} – Bilder`} beschreibung={serie.beschreibung || `${serie.titel}: Fotos von Salsa im Park Fürth – Salsatanzen auf der Freilichtbühne des Stadtparkcafès.`}>
   <section class="inhalt abschnitt">
     <a href="/Pictures/">← Alle Bilder</a>
     <h1>{serie.titel}</h1>
-    <p class="leise">{datum} · {serie.fotos.length} Fotos</p>
+    <p class="leise">{serie.fotos.length} Fotos</p>
     {serie.beschreibung && <p>{serie.beschreibung}</p>}
     <Fotoraster fotos={serie.fotos} galerieId={serie.slug} />
   </section>

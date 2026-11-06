@@ -1,7 +1,24 @@
 {
-  "titel": "Salsa im Park",
-  "datum": "",
+  "titel": "Salsa im Park 22. Juni 2016",
+  "datum": "2016-06-22",
   "beschreibung": "",
   "sichtbar": true,
-  "quelle": "2016_06_22_Salsa-im-Park_DJ-Norb_DJ-Hannes_Stadtparkcafe_Fuerth"
+  "fotos": [
+    "001.jpg",
+    "002.jpg",
+    "003.jpg",
+    "004.jpg",
+    "005.jpg",
+    "006.jpg",
+    "007.jpg",
+    "008.jpg",
+    "009.jpg",
+    "010.jpg",
+    "011.jpg",
+    "012.jpg",
+    "013.jpg",
+    "014.jpg",
+    "015.jpg",
+    "016.jpg"
+  ]
 }
